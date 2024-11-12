@@ -3,8 +3,8 @@ import { FormsModule } from "@angular/forms";
 import { DataService } from "./data.service";
 import { DataComponent } from "./data.component";
 import { LogService } from "./log.service";
-import { HttpClient } from "@angular/common/http";
 import { User } from "./user";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
     selector: "my-app",
@@ -24,7 +24,7 @@ import { User } from "./user";
 export class AppComponent implements OnInit {
     user: User | undefined;
 
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     ngOnInit() {
         this.http.get("assets/data.json").subscribe({

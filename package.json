@@ -23,6 +23,6 @@
     "@angular-devkit/build-angular": "^18.2.1",
     "@angular/cli": "^18.2.1",
     "@angular/compiler-cli": "^18.2.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.5.4"
   }
 }
