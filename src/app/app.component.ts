@@ -1,9 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { DataService } from "./data.service";
-import { DataComponent } from "./data.component";
-import { LogService } from "./log.service";
-import { User } from "./user";
+import {Component, OnInit} from "@angular/core";
+import {FormsModule} from "@angular/forms";
+import {DataService} from "./data.service";
+import {DataComponent} from "./data.component";
+import {LogService} from "./log.service";
 import {HttpService} from "./http.service";
 
 @Component({
@@ -12,25 +11,47 @@ import {HttpService} from "./http.service";
     imports: [FormsModule, DataComponent],
     providers: [DataService, LogService],
     template: `
-        <ul>
-            @for (user of users; track $index) {
-                <li>{{ user?.name }} ({{ user?.age }})</li>
-            }
-        </ul>
+        <div>
+            <p>
+                <label>Введите первое число</label><br>
+                <input type="number" name="num1" [(ngModel)]="num1"/>
+            <p>
+            <p>
+                <label>Введите второе число</label><br>
+                <input type="number" name="num2" [(ngModel)]="num2"/>
+            </p>
+            <button (click)="submit()">Отправить</button>
+        </div>
+        @if (done) {
+            <div>Сумма: {{ sum }}</div>
+        }
     `,
     styles: [`h1 {
         color: black;
     }`]
 })
 export class AppComponent implements OnInit {
-    users: User[] = [];
+    num1 = 0;
+    num2 = 0;
+    done = false;
+    sum: number | undefined;
 
-    constructor(private httpService: HttpService) {}
+    constructor(private httpService: HttpService) {
+    }
 
     ngOnInit() {
-        this.httpService.getData().subscribe({
-            next: (data: any) => this.users = data
-        });
 
     }
+
+    submit() {
+        this.httpService.getData(this.num1, this.num2).subscribe(
+            {
+                next: (data: any) => {
+                    this.sum = data.result;
+                    this.done = true;
+                }
+            }
+        )
+    };
+
 }

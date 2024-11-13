@@ -1,27 +1,20 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {catchError, map, Observable} from "rxjs";
-import {User} from "./user";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpParams} from "@angular/common/http";
+
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class HttpService {
-errMessage: string;
-  constructor(private http: HttpClient) {
-  }
 
-  getData(): Observable<User[]> {
-    return this.http.get("assets/user.json").pipe(
-        map((data: any) => {
-          const userList = data["userList"];
-          return userList.map((user: any) => new User(user.userName, user.userAge));
-        }),
-        catchError(err => {
-            console.log(err.message);
-            this.errMessage = err.message;
-            return [];
-        })
-    );
-  }
+    constructor(private http: HttpClient) {
+    }
+
+    getData(num1: number, num2: number) {
+        const params = new HttpParams()
+            .set("num1", num1.toString())
+            .set("num2", num2.toString());
+
+        return this.http.get("http://localhost:3000/sum", {params});
+    }
 }
