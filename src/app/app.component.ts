@@ -4,7 +4,7 @@ import { DataService } from "./data.service";
 import { DataComponent } from "./data.component";
 import { LogService } from "./log.service";
 import { User } from "./user";
-import {HttpClient} from "@angular/common/http";
+import {HttpService} from "./http.service";
 
 @Component({
     selector: "my-app",
@@ -12,23 +12,25 @@ import {HttpClient} from "@angular/common/http";
     imports: [FormsModule, DataComponent],
     providers: [DataService, LogService],
     template: `
-        <div>
-            <p>Имя пользователя: {{user?.name}}</p>
-            <p>Возраст пользователя: {{user?.age}}</p>
-        </div>
+        <ul>
+            @for (user of users; track $index) {
+                <li>{{ user?.name }} ({{ user?.age }})</li>
+            }
+        </ul>
     `,
     styles: [`h1 {
         color: black;
     }`]
 })
 export class AppComponent implements OnInit {
-    user: User | undefined;
+    users: User[] = [];
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(private httpService: HttpService) {}
 
     ngOnInit() {
-        this.http.get("assets/data.json").subscribe({
-            next: (data: any) => this.user = new User(data.name, data.age)
+        this.httpService.getData().subscribe({
+            next: (data: any) => this.users = data
         });
+
     }
 }
