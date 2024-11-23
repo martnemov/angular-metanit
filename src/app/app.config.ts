@@ -5,11 +5,13 @@ import { ApplicationConfig } from "@angular/core";
 import {HomeComponent} from "./home.component";
 import {AboutComponent} from "./about.component";
 import {NotFoundComponent} from "./not-found.component";
+import {ItemComponent} from "./item.component";
 
 // определение маршрутов
 const appRoutes: Routes =[
     { path: "", component: HomeComponent},
     { path: "about", component: AboutComponent},
+    { path: "item/:id", component: ItemComponent},
     { path: "**", component: NotFoundComponent }
 ];
 
