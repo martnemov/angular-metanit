@@ -1,9 +1,10 @@
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {DataService} from "./data.service";
 import {DataComponent} from "./data.component";
 import {LogService} from "./log.service";
 import {HttpService} from "./http.service";
+import {User} from "./user";
 
 @Component({
     selector: "my-app",
@@ -13,43 +14,43 @@ import {HttpService} from "./http.service";
     template: `
         <div>
             <p>
-                <label>Введите первое число</label><br>
-                <input type="number" name="num1" [(ngModel)]="num1"/>
+                <label>Name</label><br>
+                <input type="text" name="name" [(ngModel)]="user.name"/>
             <p>
             <p>
-                <label>Введите второе число</label><br>
-                <input type="number" name="num2" [(ngModel)]="num2"/>
+                <label>Age</label><br>
+                <input type="number" name="age" [(ngModel)]="user.age"/>
             </p>
-            <button (click)="submit()">Отправить</button>
+            <button (click)="submit(this.user)">Отправить</button>
         </div>
         @if (done) {
-            <div>Сумма: {{ sum }}</div>
+            <h3>Ответ сервера</h3>
+            <div>
+                Имя: {{ receivedUser?.name }}<br>
+                Возраст: {{ receivedUser?.age }}
+            </div>
         }
     `,
     styles: [`h1 {
         color: black;
     }`]
 })
-export class AppComponent implements OnInit {
-    num1 = 0;
-    num2 = 0;
-    done = false;
-    sum: number | undefined;
+export class AppComponent {
+    user: User = new User("", 0);
+    receivedUser: User | undefined;
+    done: boolean = false;
 
     constructor(private httpService: HttpService) {
     }
 
-    ngOnInit() {
-
-    }
-
-    submit() {
-        this.httpService.getData(this.num1, this.num2).subscribe(
+    submit(user: User) {
+        this.httpService.postData(this.user).subscribe(
             {
                 next: (data: any) => {
-                    this.sum = data.result;
+                    this.receivedUser = data;
                     this.done = true;
-                }
+                },
+                error: error => console.log(error)
             }
         )
     };

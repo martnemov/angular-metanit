@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from "@angular/common/http";
+import {User} from "./user";
 
 
 @Injectable({
@@ -8,6 +9,10 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 export class HttpService {
 
     constructor(private http: HttpClient) {
+    }
+
+    postData(user: User){
+        return this.http.post("http://localhost:3000/postuser", user);
     }
 
     getData(num1: number, num2: number) {
