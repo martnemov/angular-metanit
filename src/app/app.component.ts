@@ -5,31 +5,16 @@ import {DataComponent} from "./data.component";
 import {LogService} from "./log.service";
 import {HttpService} from "./http.service";
 import {User} from "./user";
+import {RouterOutlet} from "@angular/router";
 
 @Component({
     selector: "my-app",
     standalone: true,
-    imports: [FormsModule, DataComponent],
+    imports: [FormsModule, DataComponent, RouterOutlet],
     providers: [DataService, LogService],
     template: `
-        <div>
-            <p>
-                <label>Name</label><br>
-                <input type="text" name="name" [(ngModel)]="user.name"/>
-            <p>
-            <p>
-                <label>Age</label><br>
-                <input type="number" name="age" [(ngModel)]="user.age"/>
-            </p>
-            <button (click)="submit(this.user)">Отправить</button>
-        </div>
-        @if (done) {
-            <h3>Ответ сервера</h3>
-            <div>
-                Имя: {{ receivedUser?.name }}<br>
-                Возраст: {{ receivedUser?.age }}
-            </div>
-        }
+        <div> Angular 18 </div>
+        <router-outlet></router-outlet>
     `,
     styles: [`h1 {
         color: black;
