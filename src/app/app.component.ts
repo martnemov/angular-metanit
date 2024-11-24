@@ -16,8 +16,8 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
             <nav>
                 <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Главная</a>
                 <a routerLink="/about" routerLinkActive="active">О сайте</a>
-                <a routerLink="/item/7">Item 7</a>
-                <a routerLink="/item/8">Item 8</a>
+                <a routerLink="/item/7" [queryParams]="{product: 'phone', price: 200 }">Item 7</a>
+                <a routerLink="/item/8" [queryParams]="{product: 'meat', price: 15   }">Item 8</a>
             </nav>
             <router-outlet></router-outlet>
         </div>
