@@ -2,22 +2,26 @@ import {Component} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {DataService} from "./data.service";
 import {LogService} from "./log.service";
-import {HttpService} from "./http.service";
-import {User} from "./user";
-import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
+import {Router, RouterLink, RouterOutlet} from "@angular/router";
+
+class Item {
+    constructor(public id: number,
+                public product: string,
+                public price: number) {
+    }
+}
 
 @Component({
     selector: "my-app",
     standalone: true,
-    imports: [FormsModule, RouterOutlet, RouterLink, RouterLinkActive],
+    imports: [FormsModule, RouterOutlet, RouterLink],
     providers: [DataService, LogService],
     template: `
         <div>
             <nav>
-                <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Главная</a>
-                <a routerLink="/about" routerLinkActive="active">О сайте</a>
-                <a routerLink="/item/7" [queryParams]="{product: 'phone', price: 200 }">Item 7</a>
-                <a routerLink="/item/8" [queryParams]="{product: 'meat', price: 15   }">Item 8</a>
+                <a routerLink="">Главная</a> |
+                <a routerLink="/item/5/details">Информация о товаре</a> |
+                <a routerLink="/item/5/stat">Статистика товара</a>
             </nav>
             <router-outlet></router-outlet>
         </div>
@@ -36,23 +40,15 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from "@angular/router";
         }`]
 })
 export class AppComponent {
-    user: User = new User("", 0);
-    receivedUser: User | undefined;
-    done: boolean = false;
+    item: Item = new Item(1, "", 0);
 
-    constructor(private httpService: HttpService) {
+    constructor(private router: Router) {
     }
 
-    submit(user: User) {
-        this.httpService.postData(this.user).subscribe(
-            {
-                next: (data: any) => {
-                    this.receivedUser = data;
-                    this.done = true;
-                },
-                error: error => console.log(error)
-            }
+    goToItem(myItem: Item) {
+        this.router.navigate(
+            ["/item/", myItem.id],
+            {queryParams: {'product': myItem.product, 'price': myItem.price}}
         )
-    };
-
+    }
 }
